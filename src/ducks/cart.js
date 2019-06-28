@@ -1,3 +1,6 @@
+// see https://github.com/erikras/ducks-modular-redux
+
+// actions
 export const FETCH_CART_START = 'cart/FETCH_CART_START';
 export const FETCH_CART_END = 'cart/FETCH_CART_END';
 export const CART_UPDATED = 'cart/CART_UPDATED';
@@ -8,9 +11,11 @@ const initialState = {
   fetched: false,
   error: null,
   empty: true,
-  newQuantity: false
+  newQuantity: false,
+  cartCounter: 0
 };
 
+// reducer
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_CART_START:
@@ -25,9 +30,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cart: action.payload,
-        fetched: true,
         fetching: false,
-        newQuantity: action.gotNew
+        fetched: true,
+        newQuantity: action.gotNew,
+        counter: action.payload.data.reduce(
+          // sum up the quantity of all items in the cart
+          (sum, item) => sum + item.quantity,
+          0
+        )
       };
 
     case CART_UPDATED:
@@ -41,14 +51,24 @@ export default (state = initialState, action) => {
   }
 };
 
-export const fetchCartStart = () => ({
-  type: FETCH_CART_START
+// action creators
+export const fetchCartStart = (gotNew = false) => ({
+  type: FETCH_CART_START,
+  gotNew: gotNew
 });
 
-export const fetchCartEnd = cart => ({
+export const fetchCartEnd = (cart, gotNew = true) => ({
   type: FETCH_CART_END,
-  payload: cart
+  payload: cart,
+  gotNew: gotNew
 });
+
+export const cartUpdated = (gotNew = false) => ({
+  type: CART_UPDATED,
+  gotNew: gotNew
+});
+
+// side effects:
 
 export const GetCartItems = () => (dispatch, getState, api) => {
   dispatch(fetchCartStart());
@@ -56,6 +76,32 @@ export const GetCartItems = () => (dispatch, getState, api) => {
   return api.GetCartItems().then(cart => dispatch(fetchCartEnd(cart)));
 };
 
+// api-adds to the cart without triggering a state refresh
 export const addToCart = (productId, quantity) => (dispatch, getState, api) => {
-  return api.AddCart(productId, quantity);
+  return dispatch => api.AddCart(productId, quantity);
+};
+
+export const addToCartAndRefresh = (productId, quantity) => (
+  dispatch,
+  getState,
+  api
+) => {
+  api
+    .AddCart(productId, quantity)
+    .then(cart => {
+      // console.log(cart);
+
+      dispatch(cartUpdated(false));
+    })
+    .then(() => {
+      // fetch cart items from api
+      // note: these may have updated in the meantime
+
+      dispatch(fetchCartStart());
+
+      api.GetCartItems().then(cart => dispatch(fetchCartEnd(cart)));
+    })
+    .catch(e => {
+      console.log(e);
+    });
 };

@@ -11,21 +11,13 @@ class CartCounter extends Component {
   }
 
   render() {
-    let quantity = 0;
-
-    if (this.props.cart.fetched === true) {
-      var items = this.props.cart.cart.data;
-
-      quantity = items.reduce((sum, item) => sum + item.quantity, 0);
-    }
-
     return (
       <Link to="/cart" className="cart" aria-live="polite">
         <span className="cart-name" aria-hidden="true">
           Cart (
         </span>
         <span className="hide-content">The cart contains </span>
-        <span className="cart-count">{quantity}</span>
+        <span className="cart-count">{this.props.cart.counter || '...'}</span>
         <span className="hide-content">items.</span>
         <span className="cart-name" aria-hidden="true">
           )
@@ -38,7 +30,6 @@ class CartCounter extends Component {
 const mapStateToProps = ({ cart }) => ({
   cart
 });
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
