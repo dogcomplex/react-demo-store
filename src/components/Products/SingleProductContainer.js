@@ -12,10 +12,10 @@ import { GetProducts } from '../../ducks/products';
 
 class Product extends Component {
   componentDidMount() {
-    const { fetched } = this.props;
+    const { fetched, GetProducts } = this.props;
 
     if (!fetched) {
-      this.props.GetProducts();
+      GetProducts();
     }
   }
 
