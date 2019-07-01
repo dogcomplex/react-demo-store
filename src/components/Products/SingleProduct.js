@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ProductImage from './ProductImage';
+import OutOfStock from './OutOfStock';
 import Quantity from '../global/Quantity';
 import { addToCartAndRefresh } from '../../ducks/cart';
 import { updateQuantity } from '../../ducks/product';
-import { GetProductRestocks } from '../../moltin';
 
 const CurrencyPrice = ({ product }) => {
   try {
@@ -21,188 +21,151 @@ const CurrencyPrice = ({ product }) => {
   }
 };
 
-const OutOfStock = ({ product }) => {
-  const restocks = GetProductRestocks(product.id);
-  const now = new Date();
-
-  const lastRestock = restocks[restocks.length - 1];
-  const lastRestockDate = new Date(
-    lastRestock.expected_date
-  ).toLocaleDateString();
-
-  const futureRestocks = restocks.filter(
-    restock => new Date(restock.expected_date) > now
-  );
-  var nextRestock;
-  var nextRestockDate;
-  if (futureRestocks[0]) {
-    console.log(futureRestocks);
-    nextRestock = futureRestocks[0];
-    nextRestockDate = new Date(nextRestock.expected_date).toLocaleDateString();
-  }
+export const SingleProduct = ({
+  product: { background_color, quantity },
+  products: { products },
+  router: { location: { pathname } },
+  updateQuantity,
+  addToCartAndRefresh
+}) => {
+  const urlID = pathname.slice(9, 100); // TODO make a better url function
+  const product = products.data.filter(product => product.id === urlID)[0];
+  const outOfStock = product.meta.stock.availability !== 'in-stock';
+  const stock = product.meta.stock.level;
 
   return (
-    <p className="out-of-stock">
-      Sorry, this item is currently out of stock!
-      <br />
-      {futureRestocks[0] ? (
-        <span>Next restock: {nextRestockDate}</span>
-      ) : (
-        <span>Last stocked: {lastRestockDate}</span>
-      )}
-    </p>
-  );
-};
-
-class SingleProduct extends Component {
-  render() {
-    const {
-      product: { background_color, quantity },
-      products: { products },
-      router: { location: { pathname } },
-      updateQuantity,
-      addToCartAndRefresh
-    } = this.props;
-
-    const urlID = pathname.slice(9, 100); // TODO make a better url function
-    const product = products.data.filter(product => product.id === urlID)[0];
-    const outOfStock = product.meta.stock.availability !== 'in-stock';
-    const stock = product.meta.stock.level;
-
-    return (
-      <main role="main" id="container" className="main-container push">
-        <section className="product">
-          <div className="content">
-            <div className="product-listing">
-              <div className="product-image">
-                <ProductImage
-                  product={product}
-                  products={products}
-                  background={background_color}
-                />
+    <main role="main" id="container" className="main-container push">
+      <section className="product">
+        <div className="content">
+          <div className="product-listing">
+            <div className="product-image">
+              <ProductImage
+                product={product}
+                products={products}
+                background={background_color}
+              />
+            </div>
+            <div className="product-description">
+              <h2>{product.name}</h2>
+              <p className="manufacturer">
+                <span className="hide-content">Manufactured </span>By{' '}
+                <span className="word-mark">
+                  I<span className="love">Love</span>Lamp
+                </span>
+              </p>
+              <CurrencyPrice product={product} />
+              <div className="description">
+                <p className="hide-content">Product details:</p>
+                <p>{product.description}</p>
               </div>
-              <div className="product-description">
-                <h2>{product.name}</h2>
-                <p className="manufacturer">
-                  <span className="hide-content">Manufactured </span>By{' '}
-                  <span className="word-mark">
-                    I<span className="love">Love</span>Lamp
-                  </span>
-                </p>
-                <CurrencyPrice product={product} />
-                <div className="description">
-                  <p className="hide-content">Product details:</p>
-                  <p>{product.description}</p>
+              {outOfStock ? (
+                <OutOfStock product={product} />
+              ) : (
+                <form className="product" noValidate>
+                  <Quantity
+                    quantity={quantity}
+                    onUpdate={updateQuantity}
+                    max={stock}
+                  />
+                  {stock === quantity && (
+                    // if hitting max, explain why
+                    // else hide stock from user
+                    <span className="stock-info">Max Available: {stock}</span>
+                  )}
+                  <button
+                    type="submit"
+                    className="submit"
+                    onClick={e => {
+                      addToCartAndRefresh(product.id, quantity);
+                      e.preventDefault();
+                    }}>
+                    Add to cart
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+          <div className="product-info">
+            <div className="product-details">
+              <div className="header">
+                <h3>Product details</h3>
+              </div>
+              <div className="details-body">
+                <div className="row">
+                  <div className="label">Weight</div>
+                  <div className="value">1.5kg</div>
                 </div>
-                {outOfStock ? (
-                  <OutOfStock product={product} />
-                ) : (
-                  <form className="product" noValidate>
-                    <Quantity
-                      quantity={quantity}
-                      onUpdate={updateQuantity}
-                      max={stock}
-                    />
-                    {stock === quantity && (
-                      // if hitting max, explain why
-                      // else hide stock from user
-                      <span className="stock-info">In-Stock: {stock}</span>
-                    )}
-                    <button
-                      type="submit"
-                      className="submit"
-                      onClick={e => {
-                        addToCartAndRefresh(product.id, quantity);
-                        e.preventDefault();
-                      }}>
-                      Add to cart
-                    </button>
-                  </form>
-                )}
+                <div className="row">
+                  <div className="label">Finish</div>
+                  <div className="value">{product.finish}</div>
+                </div>
+                <div className="row">
+                  <div className="label">Material</div>
+                  <div className="value">{product.material}</div>
+                </div>
+                <div className="row">
+                  <div className="label">Bulb type</div>
+                  <div className="value">{product.bulb}</div>
+                </div>
+                <div className="row">
+                  <div className="label">Max Watt</div>
+                  <div className="value">{product.max_watt}</div>
+                </div>
+                <div className="row">
+                  <div className="label">Bulb Qty</div>
+                  <div className="value">{product.bulb_qty}</div>
+                </div>
+                <div className="row">
+                  <div className="label">SKU</div>
+                  <div className="value sku">{product.sku}</div>
+                </div>
               </div>
             </div>
-            <div className="product-info">
-              <div className="product-details">
-                <div className="header">
-                  <h3>Product details</h3>
+            <div className="product-details">
+              <div className="header">
+                <h3>Dimensions (cm)</h3>
+              </div>
+              <div className="details-body">
+                <div className="row">
+                  <div className="label">Height</div>
+                  <div className="value">156</div>
                 </div>
-                <div className="details-body">
-                  <div className="row">
-                    <div className="label">Weight</div>
-                    <div className="value">1.5kg</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Finish</div>
-                    <div className="value">{product.finish}</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Material</div>
-                    <div className="value">{product.material}</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Bulb type</div>
-                    <div className="value">{product.bulb}</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Max Watt</div>
-                    <div className="value">{product.max_watt}</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Bulb Qty</div>
-                    <div className="value">{product.bulb_qty}</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">SKU</div>
-                    <div className="value sku">{product.sku}</div>
-                  </div>
+                <div className="row">
+                  <div className="label">Width</div>
+                  <div className="value">80</div>
+                </div>
+                <div className="row">
+                  <div className="label">Depth</div>
+                  <div className="value">80</div>
                 </div>
               </div>
-              <div className="product-details">
-                <div className="header">
-                  <h3>Dimensions (cm)</h3>
+            </div>
+            <div className="product-details">
+              <div className="header">
+                <h3>Delivery & returns</h3>
+              </div>
+              <div className="details-body">
+                <div className="row">
+                  <div className="label">Dispatch</div>
+                  <div className="value">Within 2 weeks</div>
                 </div>
-                <div className="details-body">
-                  <div className="row">
-                    <div className="label">Height</div>
-                    <div className="value">156</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Width</div>
-                    <div className="value">80</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Depth</div>
-                    <div className="value">80</div>
-                  </div>
+                <div className="row">
+                  <div className="label">Delivery</div>
+                  <div className="value">$5.95</div>
                 </div>
               </div>
-              <div className="product-details">
-                <div className="header">
-                  <h3>Delivery & returns</h3>
-                </div>
-                <div className="details-body">
-                  <div className="row">
-                    <div className="label">Dispatch</div>
-                    <div className="value">Within 2 weeks</div>
-                  </div>
-                  <div className="row">
-                    <div className="label">Delivery</div>
-                    <div className="value">$5.95</div>
-                  </div>
-                </div>
-                <div className="footer">
-                  <p>
-                    Read the <a href="/">delivery and returns policy</a>.
-                  </p>
-                </div>
+              <div className="footer">
+                <p>
+                  Read the <a href="/">delivery and returns policy</a>.
+                </p>
               </div>
             </div>
           </div>
-        </section>
-      </main>
-    );
-  }
-}
+        </div>
+      </section>
+    </main>
+  );
+};
 
 const mapStateToProps = state => {
   return state;
