@@ -46,3 +46,21 @@ export const GetOrder = ID => Moltin.Orders.Get(ID);
 export const OrderPay = (ID, data) => Moltin.Orders.Payment(ID, data);
 
 export const DeleteCart = () => Moltin.Cart().Delete();
+
+// Mock API functions:
+
+export const GetProductRestocks = ID => {
+  // returns a list of upcoming restocking events and quantity by date, for product ID
+  switch (ID) {
+    // MOCKED:
+    case '05033a69-bf62-4f38-a9fb-c87c5060da7f':
+      return [
+        {
+          expected_date: '2019-07-28T04:45:51+00:00',
+          quantity: 100
+        }
+      ];
+    default:
+      return [];
+  }
+};

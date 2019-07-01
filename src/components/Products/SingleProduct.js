@@ -6,6 +6,7 @@ import ProductImage from './ProductImage';
 import Quantity from '../global/Quantity';
 import { addToCartAndRefresh } from '../../ducks/cart';
 import { updateQuantity } from '../../ducks/product';
+import { GetProductRestocks } from '../../moltin';
 
 const CurrencyPrice = ({ product }) => {
   try {
@@ -20,6 +21,44 @@ const CurrencyPrice = ({ product }) => {
   }
 };
 
+const OutOfStock = ({ product }) => {
+  const restocks = GetProductRestocks(product.id);
+  const now = new Date();
+
+  const lastRestock = restocks[restocks.length - 1];
+  const lastRestockDate = new Date(
+    lastRestock.expected_date
+  ).toLocaleDateString();
+
+  const futureRestocks = restocks.filter(
+    restock => new Date(restock.expected_date) > now
+  );
+  var nextRestock;
+  var nextRestockDate;
+  if (futureRestocks[0]) {
+    console.log(futureRestocks);
+    nextRestock = futureRestocks[0];
+    nextRestockDate = new Date(nextRestock.expected_date).toLocaleDateString();
+  }
+
+  return (
+    <p
+      className="out-of-stock"
+      style={{
+        fontWeight: 'bold',
+        color: 'red'
+      }}>
+      Sorry, this item is currently out of stock!
+      <br />
+      {futureRestocks[0] ? (
+        <span>Next restock: {nextRestockDate}</span>
+      ) : (
+        <span>Last stocked: {lastRestockDate}</span>
+      )}
+    </p>
+  );
+};
+
 class SingleProduct extends Component {
   render() {
     const {
@@ -31,8 +70,9 @@ class SingleProduct extends Component {
     } = this.props;
 
     const urlID = pathname.slice(9, 100); // TODO make a better url function
-
     const product = products.data.filter(product => product.id === urlID)[0];
+    const outOfStock = product.meta.stock.availability !== 'in-stock';
+    const stock = product.meta.stock.level;
 
     return (
       <main role="main" id="container" className="main-container push">
@@ -59,18 +99,33 @@ class SingleProduct extends Component {
                   <p className="hide-content">Product details:</p>
                   <p>{product.description}</p>
                 </div>
-                <form className="product" noValidate>
-                  <Quantity quantity={quantity} onUpdate={updateQuantity} />
-                  <button
-                    type="submit"
-                    className="submit"
-                    onClick={e => {
-                      addToCartAndRefresh(product.id, quantity);
-                      e.preventDefault();
-                    }}>
-                    Add to cart
-                  </button>
-                </form>
+                {outOfStock ? (
+                  <OutOfStock product={product} />
+                ) : (
+                  <form className="product" noValidate>
+                    <Quantity
+                      quantity={quantity}
+                      onUpdate={updateQuantity}
+                      max={stock}
+                    />
+                    {stock === quantity && (
+                      // if hitting max, explain why
+                      // else hide stock from user
+                      <span style={{ fontWeight: 'bold' }}>
+                        In-Stock: {stock}
+                      </span>
+                    )}
+                    <button
+                      type="submit"
+                      className="submit"
+                      onClick={e => {
+                        addToCartAndRefresh(product.id, quantity);
+                        e.preventDefault();
+                      }}>
+                      Add to cart
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
             <div className="product-info">

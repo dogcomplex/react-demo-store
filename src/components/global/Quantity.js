@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ quantity, target, onUpdate }) => (
+export default ({ quantity, target, onUpdate, max }) => (
   <div className="quantity-input">
     <p className="hide-content">Product quantity.</p>
     <p className="hide-content">
@@ -9,7 +9,8 @@ export default ({ quantity, target, onUpdate }) => (
     <button
       type="button"
       className="decrement number-button"
-      onClick={() => onUpdate(target, quantity - 1)}>
+      onClick={() => onUpdate(target, quantity - 1)}
+      disabled={quantity === 1}>
       <span className="hide-content">Decrement quantity</span>
       <span aria-hidden="true">-</span>
     </button>
@@ -18,6 +19,7 @@ export default ({ quantity, target, onUpdate }) => (
       name="number"
       type="number"
       min="1"
+      max={max ? max : undefined}
       value={quantity}
       defaultValue={quantity}
       size="2"
@@ -34,7 +36,8 @@ export default ({ quantity, target, onUpdate }) => (
     <button
       type="button"
       className="increment number-button"
-      onClick={() => onUpdate(target, quantity + 1)}>
+      onClick={() => onUpdate(target, quantity + 1)}
+      disabled={quantity >= max}>
       <span className="hide-content">Increment quantity</span>
       <span aria-hidden="true">+</span>
     </button>
