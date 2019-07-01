@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
   }
 };
 
-export const updateQuantity = quantity => ({
+export const updateQuantity = (id, quantity) => ({
   type: UPDATE_QUANTITY,
   payload: quantity
 });

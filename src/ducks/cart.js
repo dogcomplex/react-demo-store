@@ -12,7 +12,8 @@ const initialState = {
   error: null,
   empty: true,
   newQuantity: false,
-  cartCounter: 0
+  counter: 0,
+  updatedAt: null
 };
 
 // reducer
@@ -27,6 +28,14 @@ export default (state = initialState, action) => {
       };
 
     case FETCH_CART_END:
+      const responseTime = new Date(action.payload.meta.updated_at);
+      if (state.updatedAt && responseTime < new Date(state.updatedAt)) {
+        return {
+          ...state,
+          fetching: false,
+          fetched: true
+        };
+      }
       return {
         ...state,
         cart: action.payload,
@@ -37,7 +46,9 @@ export default (state = initialState, action) => {
           // sum up the quantity of all items in the cart
           (sum, item) => sum + item.quantity,
           0
-        )
+        ),
+        empty: !action.payload,
+        updatedAt: action.payload.meta.updated_at
       };
 
     case CART_UPDATED:
@@ -77,9 +88,8 @@ export const GetCartItems = () => (dispatch, getState, api) => {
 };
 
 // api-adds to the cart without triggering a state refresh
-export const addToCart = (productId, quantity) => (dispatch, getState, api) => {
-  return dispatch => api.AddCart(productId, quantity);
-};
+export const addToCart = (productId, quantity) => (dispatch, getState, api) =>
+  api.AddCart(productId, quantity);
 
 export const addToCartAndRefresh = (productId, quantity) => (
   dispatch,
@@ -88,19 +98,29 @@ export const addToCartAndRefresh = (productId, quantity) => (
 ) => {
   api
     .AddCart(productId, quantity)
-    .then(cart => {
-      // console.log(cart);
+    .then(cart => dispatch(cartUpdated(false)))
+    .then(() => dispatch(fetchCartStart()))
+    .then(() => api.GetCartItems())
+    .then(cart => dispatch(fetchCartEnd(cart)))
+    .catch(e => {
+      console.log(e);
+    });
+};
 
-      dispatch(cartUpdated(false));
-    })
-    .then(() => {
-      // fetch cart items from api
-      // note: these may have updated in the meantime
+export const updateCartQuantity = (ID, quantity) => (
+  dispatch,
+  getState,
+  api
+) => {
+  const n = parseInt(quantity, 10);
+  if (isNaN(n) || n < 0) {
+    return;
+  }
+  dispatch(fetchCartStart());
 
-      dispatch(fetchCartStart());
-
-      api.GetCartItems().then(cart => dispatch(fetchCartEnd(cart)));
-    })
+  api
+    .UpdateCart(ID, n)
+    .then(cart => dispatch(fetchCartEnd(cart)))
     .catch(e => {
       console.log(e);
     });

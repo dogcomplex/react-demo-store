@@ -28,11 +28,7 @@ class Cart extends Component {
   render() {
     const { cart, products } = this.props;
 
-    if (
-      cart.fetched === true &&
-      cart.fetching === false &&
-      products.fetched === true
-    ) {
+    if (products.fetched === true && cart.cart) {
       if (cart.cart.data[0]) {
         var subtotal = '$' + cart.cart.meta.display_price.with_tax.amount / 100;
         return (

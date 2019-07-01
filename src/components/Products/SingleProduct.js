@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import ProductImage from './ProductImage';
 import ProductQuantity from './ProductQuantity';
 import { addToCartAndRefresh } from '../../ducks/cart';
+import { updateQuantity } from '../../ducks/product';
 
 const CurrencyPrice = ({ product }) => {
   try {
@@ -24,7 +25,9 @@ class SingleProduct extends Component {
     const {
       product: { background_color, quantity },
       products: { products },
-      router: { location: { pathname } }
+      router: { location: { pathname } },
+      updateQuantity,
+      addToCartAndRefresh
     } = this.props;
 
     const urlID = pathname.slice(9, 100); // TODO make a better url function
@@ -57,12 +60,15 @@ class SingleProduct extends Component {
                   <p>{product.description}</p>
                 </div>
                 <form className="product" noValidate>
-                  <ProductQuantity quantity={quantity} />
+                  <ProductQuantity
+                    quantity={quantity}
+                    onUpdate={updateQuantity}
+                  />
                   <button
                     type="submit"
                     className="submit"
                     onClick={e => {
-                      this.props.addToCartAndRefresh(product.id, quantity);
+                      addToCartAndRefresh(product.id, quantity);
                       e.preventDefault();
                     }}>
                     Add to cart
@@ -160,7 +166,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      addToCartAndRefresh
+      addToCartAndRefresh,
+      updateQuantity
     },
     dispatch
   );

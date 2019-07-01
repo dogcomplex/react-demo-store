@@ -1,10 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { updateQuantity } from '../../ducks/product';
-
-export const ProductQuantity = props => (
+export default ({ quantity, target, onUpdate }) => (
   <div className="quantity-input">
     <p className="hide-content">Product quantity.</p>
     <p className="hide-content">
@@ -13,9 +9,7 @@ export const ProductQuantity = props => (
     <button
       type="button"
       className="decrement number-button"
-      onClick={() => {
-        props.updateQuantity(props.quantity - 1);
-      }}>
+      onClick={() => onUpdate(target, quantity - 1)}>
       <span className="hide-content">Decrement quantity</span>
       <span aria-hidden="true">-</span>
     </button>
@@ -24,34 +18,25 @@ export const ProductQuantity = props => (
       name="number"
       type="number"
       min="1"
-      max="100"
-      value={props.quantity}
+      value={quantity}
+      defaultValue={quantity}
       size="2"
-      onChange={event => {
-        props.updateQuantity(event.target.value);
+      onChange={event => onUpdate(target, event.target.value)}
+      onKeyPress={event => {
+        if (event.which === 13) {
+          // Enter
+          onUpdate(target, event.target.value);
+          event.preventDefault();
+        }
       }}
+      onBlur={event => onUpdate(target, event.target.value)}
     />
     <button
       type="button"
       className="increment number-button"
-      onClick={() => {
-        props.updateQuantity(props.quantity + 1);
-      }}>
+      onClick={() => onUpdate(target, quantity + 1)}>
       <span className="hide-content">Increment quantity</span>
       <span aria-hidden="true">+</span>
     </button>
   </div>
 );
-
-const mapStateToProps = state => {
-  return state;
-};
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      updateQuantity
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductQuantity);
