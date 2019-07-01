@@ -20,18 +20,23 @@ export default ({ quantity, target, onUpdate, max }) => (
       type="number"
       min="1"
       max={max ? max : undefined}
-      value={quantity}
       defaultValue={quantity}
       size="2"
-      onChange={event => onUpdate(target, event.target.value)}
+      onClick={event => {
+        event.target.value = null;
+      }}
       onKeyPress={event => {
         if (event.which === 13) {
           // Enter
+          if (event.target.value > event.target.max)
+            event.target.value = event.target.max;
+          if (event.target.value < event.target.min)
+            event.target.value = event.target.min;
+
           onUpdate(target, event.target.value);
           event.preventDefault();
         }
       }}
-      onBlur={event => onUpdate(target, event.target.value)}
     />
     <button
       type="button"

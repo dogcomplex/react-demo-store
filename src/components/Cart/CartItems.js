@@ -38,11 +38,11 @@ export const CartItems = ({
               <div className="cart-title">
                 <h3>{item.name}</h3>
               </div>
-
               <div className="cart-quantity">
                 <Quantity
                   quantity={item.quantity}
                   target={item.id}
+                  max={product.meta.stock.level}
                   onUpdate={updateCartQuantity}
                 />
               </div>
