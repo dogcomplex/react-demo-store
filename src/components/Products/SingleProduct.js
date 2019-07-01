@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ProductImage from './ProductImage';
-import ProductQuantity from './ProductQuantity';
+import Quantity from '../global/Quantity';
 import { addToCartAndRefresh } from '../../ducks/cart';
 import { updateQuantity } from '../../ducks/product';
 
@@ -60,10 +60,7 @@ class SingleProduct extends Component {
                   <p>{product.description}</p>
                 </div>
                 <form className="product" noValidate>
-                  <ProductQuantity
-                    quantity={quantity}
-                    onUpdate={updateQuantity}
-                  />
+                  <Quantity quantity={quantity} onUpdate={updateQuantity} />
                   <button
                     type="submit"
                     className="submit"

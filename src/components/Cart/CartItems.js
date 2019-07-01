@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import ProductImage from '../Products/ProductImage';
 import { FETCH_CART_START, FETCH_CART_END } from '../../ducks/cart';
-import ProductQuantity from '../Products/ProductQuantity';
+import Quantity from '../global/Quantity';
 
 import { updateCartQuantity } from '../../ducks/cart';
 
@@ -40,7 +40,7 @@ class CartItems extends Component {
                 </div>
 
                 <div className="cart-quantity">
-                  <ProductQuantity
+                  <Quantity
                     quantity={item.quantity}
                     target={item.id}
                     onUpdate={updateCartQuantity}
