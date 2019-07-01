@@ -1,24 +1,24 @@
 import React from 'react';
 
-const ProductImage = props => {
+const ProductImage = ({ product, products, background }) => {
   let file;
   let fileId;
   let placeholder =
     'https://placeholdit.imgix.net/~text?txtsize=69&txt=824%C3%971050&w=824&h=1050';
 
   var isThereAMainImage = product => {
-    fileId = props.product.relationships.main_image.data.id;
+    fileId = product.relationships.main_image.data.id;
 
-    file = props.products.included.main_images.find(function(el) {
+    file = products.included.main_images.find(function(el) {
       return fileId === el.id;
     });
 
     return (
       (
         <img
-          alt={props.product.name + '-' + props.product.description}
+          alt={product.name + '-' + product.description}
           src={file.link.href}
-          style={{ background: props.background }}
+          style={{ background: background }}
         />
       ) || <img alt="placeholder" src={placeholder} />
     );
@@ -26,15 +26,15 @@ const ProductImage = props => {
 
   var isThereAFile = product => {
     try {
-      fileId = props.product.relationships.files.data[0].id;
-      file = props.products.included.files.find(function(el) {
+      fileId = product.relationships.files.data[0].id;
+      file = products.included.files.find(function(el) {
         return fileId === el.id;
       });
       return (
         <img
-          alt={props.product.name + ', ' + props.product.description}
+          alt={product.name + ', ' + product.description}
           src={file.link.href}
-          style={{ background: props.background }}
+          style={{ background: background }}
         />
       );
     } catch (e) {
@@ -43,9 +43,9 @@ const ProductImage = props => {
   };
 
   try {
-    return isThereAMainImage(props.product);
+    return isThereAMainImage(product);
   } catch (e) {
-    return isThereAFile(props.product);
+    return isThereAFile(product);
   }
 };
 
