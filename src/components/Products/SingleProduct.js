@@ -42,12 +42,7 @@ const OutOfStock = ({ product }) => {
   }
 
   return (
-    <p
-      className="out-of-stock"
-      style={{
-        fontWeight: 'bold',
-        color: 'red'
-      }}>
+    <p className="out-of-stock">
       Sorry, this item is currently out of stock!
       <br />
       {futureRestocks[0] ? (
@@ -111,9 +106,7 @@ class SingleProduct extends Component {
                     {stock === quantity && (
                       // if hitting max, explain why
                       // else hide stock from user
-                      <span style={{ fontWeight: 'bold' }}>
-                        In-Stock: {stock}
-                      </span>
+                      <span className="stock-info">In-Stock: {stock}</span>
                     )}
                     <button
                       type="submit"
