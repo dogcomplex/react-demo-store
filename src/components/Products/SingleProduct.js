@@ -25,13 +25,21 @@ export const SingleProduct = ({
   product: { background_color, quantity },
   products: { products },
   router: { location: { pathname } },
+  cart,
   updateQuantity,
   addToCartAndRefresh
 }) => {
   const urlID = pathname.slice(9, 100); // TODO make a better url function
   const product = products.data.filter(product => product.id === urlID)[0];
-  const outOfStock = product.meta.stock.availability !== 'in-stock';
+
+  const cartProduct = cart.cart
+    ? cart.cart.data.filter(product => product.product_id === urlID)[0]
+    : null;
+
   const stock = product.meta.stock.level;
+  const stockLeft = cartProduct ? stock - cartProduct.quantity : stock;
+  const outOfStock =
+    product.meta.stock.availability !== 'in-stock' || stockLeft === 0;
 
   return (
     <main role="main" id="container" className="main-container push">
@@ -65,12 +73,14 @@ export const SingleProduct = ({
                   <Quantity
                     quantity={quantity}
                     onUpdate={updateQuantity}
-                    max={stock}
+                    max={stockLeft}
                   />
-                  {stock === quantity && (
+                  {stockLeft === quantity && (
                     // if hitting max, explain why
                     // else hide stock from user
-                    <span className="stock-info">Max Available: {stock}</span>
+                    <span className="stock-info">
+                      Max Available: {stockLeft}
+                    </span>
                   )}
                   <button
                     type="submit"
