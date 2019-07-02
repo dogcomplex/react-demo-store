@@ -36,8 +36,9 @@ export const SingleProduct = ({
     : null;
   const stock = product.meta.stock.level;
   const stockLeft = cartProduct ? stock - cartProduct.quantity : stock;
-  const outOfStock =
-    product.meta.stock.availability !== 'in-stock' || stockLeft === 0;
+  const inStock = product.meta.stock.availability
+    ? product.meta.stock.availability === 'in-stock' && stockLeft !== 0
+    : null;
 
   return (
     <main role="main" id="container" className="main-container push">
@@ -64,9 +65,9 @@ export const SingleProduct = ({
                 <p className="hide-content">Product details:</p>
                 <p>{product.description}</p>
               </div>
-              {outOfStock ? (
+              {inStock === false ? (
                 <OutOfStock product={product} />
-              ) : (
+              ) : inStock !== null ? (
                 <form className="product" noValidate>
                   <Quantity
                     quantity={quantity}
@@ -90,6 +91,8 @@ export const SingleProduct = ({
                     Add to cart
                   </button>
                 </form>
+              ) : (
+                <span>Checking Stock...</span>
               )}
             </div>
           </div>
