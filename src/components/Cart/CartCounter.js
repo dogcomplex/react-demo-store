@@ -18,8 +18,9 @@ class CartCounter extends Component {
         </span>
         <span className="hide-content">The cart contains </span>
         <span className="cart-count">
-          {!this.props.cart.fetching ? this.props.cart.counter || '0' : '...' // TODO pretty animation here
-          }
+          {!this.props.cart.fetching || !this.props.cart.gotNew
+            ? this.props.cart.counter || '0'
+            : '...'}
         </span>
         <span className="hide-content">items.</span>
         <span className="cart-name" aria-hidden="true">
