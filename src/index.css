@@ -14,12 +14,11 @@ body {
 }
 
 .cart-quantity {
-  text-align: center;
-  align-content: center;
+  text-align: left;
+  align-content: left;
 }
 
 .stock-info-cart {
   font-weight: normal;
-  text-align: center;
-  align-content: center;
+  padding-left: 50px;
 }
