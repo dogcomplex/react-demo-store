@@ -48,10 +48,10 @@ export const CartItems = ({
                   max={product.meta.stock.level}
                   onUpdate={updateCartQuantity}
                 />
-                <span className="stock-info-cart">
-                  {product.meta.stock.level === item.quantity &&
-                    'Max: ' + item.quantity}
-                </span>
+
+                {product.meta.stock.level === item.quantity && (
+                  <span className="stock-info-cart">Max: {item.quantity}</span>
+                )}
               </div>
               <div className="cart-price">
                 <p className="price">
