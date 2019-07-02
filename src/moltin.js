@@ -58,6 +58,21 @@ export const GetProductRestocks = ID => {
         {
           expected_date: '2019-07-28T04:45:51+00:00',
           quantity: 100
+        },
+        {
+          expected_date: '2019-08-29T04:45:51+00:00',
+          quantity: 200
+        }
+      ];
+    case '996a0dd3-d83a-4391-b5aa-a28f87997027':
+      return [
+        {
+          expected_date: '2019-05-28T04:45:51+00:00',
+          quantity: 100
+        },
+        {
+          expected_date: '2019-08-29T04:45:51+00:00',
+          quantity: 200
         }
       ];
     default:

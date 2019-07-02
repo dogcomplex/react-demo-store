@@ -8,19 +8,19 @@ function mapStateToProps(state) {
 
 class CheckoutItems extends Component {
   render() {
-    var items = this.props.cart.cart.data;
+    let items = this.props.cart.cart.data;
 
-    var products = this.props.products.products;
+    let products = this.props.products.products;
 
     return (
       <div>
         {items.map(function(item) {
-          var productArray = products.data.filter(function(product) {
+          let productArray = products.data.filter(function(product) {
             return product.id === item.product_id;
           });
 
-          var product = productArray[0];
-          var background = product.background_colour;
+          let product = productArray[0];
+          let background = product.background_colour;
 
           return (
             <div className="checkout-product" key={item.id}>

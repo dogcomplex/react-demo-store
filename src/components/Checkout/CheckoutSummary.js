@@ -6,7 +6,7 @@ import Loading from '../global/Loading';
 import { FETCH_PRODUCTS_START, FETCH_PRODUCTS_END } from '../../ducks/products';
 import { FETCH_CART_START, FETCH_CART_END } from '../../ducks/cart';
 
-var api = require('../../moltin.js');
+let api = require('../../moltin.js');
 
 function mapStateToProps(state) {
   return state;
@@ -53,7 +53,7 @@ class CheckoutSummary extends Component {
       this.props.cart.fetched === true &&
       this.props.products.fetched === true
     ) {
-      var tax =
+      let tax =
         this.props.cart.cart.meta.display_price.with_tax.amount -
         this.props.cart.cart.meta.display_price.without_tax.amount;
 

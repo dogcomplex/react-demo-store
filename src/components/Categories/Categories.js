@@ -11,13 +11,13 @@ function mapStateToProps(state) {
 
 class Categories extends Component {
   render() {
-    var ToStyles = () => {
+    let ToStyles = () => {
       this.props.dispatch(dispatch => {
         dispatch(push('/styles'));
       });
     };
 
-    var ChangeStyle = name => {
+    let ChangeStyle = name => {
       this.props.dispatch(dispatch => {
         dispatch({ type: SET_STYLE, style: name });
       });
@@ -25,8 +25,8 @@ class Categories extends Component {
       ToStyles();
     };
 
-    var products = this.props.products.products;
-    var productData = this.props.products.products.data;
+    let products = this.props.products.products;
+    let productData = this.props.products.products.data;
     let product;
 
     try {
@@ -40,9 +40,9 @@ class Categories extends Component {
         <div className="styles-list">
           {this.props.categories.categories.data.map(function(category) {
             if (category.relationships.products) {
-              var CatProductRef = category.relationships.products.data[0];
+              let CatProductRef = category.relationships.products.data[0];
 
-              var CatProduct = productData.find(function(product) {
+              let CatProduct = productData.find(function(product) {
                 return product.id === CatProductRef.id;
               });
 

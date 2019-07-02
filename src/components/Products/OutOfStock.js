@@ -25,7 +25,7 @@ class OutOfStock extends Component {
   }
 
   tick() {
-    var seconds = 0;
+    let seconds = 0;
     if (this.state.restock) {
       seconds = parseInt(
         (new Date(this.state.restock.expected_date).getTime() -
@@ -50,7 +50,7 @@ class OutOfStock extends Component {
   render() {
     const { restock, secondsTilRestock } = this.state;
 
-    var restockDate;
+    let restockDate;
     if (restock)
       restockDate = new Date(restock.expected_date).toLocaleDateString();
 

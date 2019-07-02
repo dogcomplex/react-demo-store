@@ -42,7 +42,7 @@ class Quantity extends React.Component {
           size="2"
           // onClick={event => event.target.value = null}
           onChange={event => {
-            var n = event.target.value;
+            let n = event.target.value;
             if (!n) {
               n = '';
             }

@@ -8,21 +8,21 @@ function mapStateToProps(state) {
 
 class StyleProducts extends Component {
   render() {
-    var productsToMap = [];
-    var categories = this.props.categories.categories.data;
-    var CurrentStyle = this.props.styles.style;
-    var CurrentCategory = categories.find(category => {
+    let productsToMap = [];
+    let categories = this.props.categories.categories.data;
+    let CurrentStyle = this.props.styles.style;
+    let CurrentCategory = categories.find(category => {
       return category.name === CurrentStyle;
     });
 
     try {
-      var CurrentCategoryProductIDs =
+      let CurrentCategoryProductIDs =
         CurrentCategory.relationships.products.data;
-      var Products = this.props.products.products;
-      var ProductsData = this.props.products.products.data;
+      let Products = this.props.products.products;
+      let ProductsData = this.props.products.products.data;
 
       CurrentCategoryProductIDs.forEach(function(productref) {
-        var Product = ProductsData.find(function(product) {
+        let Product = ProductsData.find(function(product) {
           return product.id === productref.id;
         });
         productsToMap.push(Product);

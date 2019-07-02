@@ -8,11 +8,11 @@ function mapStateToProps(state) {
 
 class TopPicks extends Component {
   render() {
-    var TopPicksToMap = [];
+    let TopPicksToMap = [];
 
-    var collections = this.props.collections.collections.data;
+    let collections = this.props.collections.collections.data;
 
-    var productData = this.props.products.products.data;
+    let productData = this.props.products.products.data;
 
     let TopPicks;
 
@@ -30,13 +30,13 @@ class TopPicks extends Component {
       TopPicksProductIDs = TopPicks.relationships.products.data;
 
       TopPicksProductIDs.forEach(function(productref) {
-        var TopPicksProduct = productData.find(function(product) {
+        let TopPicksProduct = productData.find(function(product) {
           return product.id === productref.id;
         });
         TopPicksToMap.push(TopPicksProduct);
       });
 
-      var products = this.props.products.products;
+      let products = this.props.products.products;
 
       return (
         <div>
@@ -49,7 +49,7 @@ class TopPicks extends Component {
               background = '#d9d9d9';
             }
 
-            var isNew = null;
+            let isNew = null;
 
             if (top_pick.new === true) {
               isNew = 'new';

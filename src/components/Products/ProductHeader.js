@@ -15,15 +15,15 @@ class ProductHeader extends Component {
   }
 
   render() {
-    var ID = this.props.router.location.pathname.slice(9, 100);
+    let ID = this.props.router.location.pathname.slice(9, 100);
 
-    var productArray = this.props.products.products.data.filter(function(
+    let productArray = this.props.products.products.data.filter(function(
       product
     ) {
       return product.id === ID;
     });
 
-    var product = productArray[0];
+    let product = productArray[0];
 
     return (
       <header className="push">

@@ -31,11 +31,9 @@ export const SingleProduct = ({
 }) => {
   const urlID = pathname.slice(9, 100); // TODO make a better url function
   const product = products.data.filter(product => product.id === urlID)[0];
-
   const cartProduct = cart.cart
     ? cart.cart.data.filter(product => product.product_id === urlID)[0]
     : null;
-
   const stock = product.meta.stock.level;
   const stockLeft = cartProduct ? stock - cartProduct.quantity : stock;
   const outOfStock =
@@ -95,7 +93,7 @@ export const SingleProduct = ({
               )}
             </div>
           </div>
-          {false && (
+          {false && ( // Temporarily removing from this release
             <div className="product-info">
               <div className="product-details">
                 <div className="header">

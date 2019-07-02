@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderNav from '../global/HeaderNav';
 import * as Header from '../../assets/img/headers/header.png';
 
-var HeaderStyle = {
+let HeaderStyle = {
   backgroundImage: `url(${Header})`,
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'scroll',

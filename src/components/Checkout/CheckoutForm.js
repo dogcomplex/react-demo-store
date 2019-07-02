@@ -11,7 +11,7 @@ function mapStateToProps(state) {
   return { push: state.push };
 }
 
-var CheckoutTemplate = {
+let CheckoutTemplate = {
   customer: {
     name: 'John Doe',
     email: 'john@doe.co'
@@ -37,7 +37,7 @@ var CheckoutTemplate = {
     country: 'United Kingdom'
   }
 };
-var PaymentTemplate = {
+let PaymentTemplate = {
   gateway: 'stripe',
   method: 'purchase',
   first_name: 'John',

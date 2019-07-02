@@ -6,7 +6,7 @@ const ProductImage = ({ product, products, background }) => {
   let placeholder =
     'https://placeholdit.imgix.net/~text?txtsize=69&txt=824%C3%971050&w=824&h=1050';
 
-  var isThereAMainImage = product => {
+  let isThereAMainImage = product => {
     fileId = product.relationships.main_image.data.id;
 
     file = products.included.main_images.find(function(el) {
@@ -24,7 +24,7 @@ const ProductImage = ({ product, products, background }) => {
     );
   };
 
-  var isThereAFile = product => {
+  let isThereAFile = product => {
     try {
       fileId = product.relationships.files.data[0].id;
       file = products.included.files.find(function(el) {
