@@ -38,7 +38,7 @@ class Quantity extends React.Component {
           type="number"
           min="1"
           max={max ? max : undefined}
-          value={this.state.value}
+          value={value}
           size="2"
           // onClick={event => event.target.value = null}
           onChange={event => {
