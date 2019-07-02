@@ -30,7 +30,7 @@ class ProductHeader extends Component {
         <div className="nav-container">
           <nav className="primary-nav">
             <Link to="/products">Products</Link>
-            <Link to="/styles">Styles</Link>
+            {false && <Link to="/styles">Styles</Link>}
           </nav>
           <div className="logo">
             <Link to="/" className="logo-link">

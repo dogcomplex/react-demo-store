@@ -4,7 +4,11 @@
   </a>
 </p>
 
-# Moltin &mdash; React Demo Store
+# Forked React Store by Warren Koch
+
+An example eCommerce site with improved Cart controls, Add to Product controls, and Out of Stock display logic including a countdown to future Restock events (fetchable by API).
+
+## Moltin &mdash; React Demo Store
 
 An example store built using [React](https://reactjs.org/), [Redux](https://redux.js.org/) and [moltin](https://moltin.com). This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -14,7 +18,7 @@ An example store built using [React](https://reactjs.org/), [Redux](https://redu
 ## Development
 
 ```bash
-git clone https://github.com/moltin/react-demo-store.git
+git clone https://github.com/dogcomplex/react-demo-store.git
 cd react-demo-store
 yarn # or npm install
 yarn start # or npm start

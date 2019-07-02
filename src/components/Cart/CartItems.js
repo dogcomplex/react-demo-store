@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link, withRouter } from 'react-router-dom';
 
 import ProductImage from '../Products/ProductImage';
 import Quantity from '../global/Quantity';
@@ -27,12 +28,14 @@ export const CartItems = ({
         return (
           <div className="cart-item" key={item.id}>
             <div className="product-image" aria-hidden="true">
-              <ProductImage
-                alt="item.description"
-                products={products}
-                product={product}
-                background={background}
-              />
+              <Link to={'/product/' + product.id}>
+                <ProductImage
+                  alt="item.description"
+                  products={products}
+                  product={product}
+                  background={background}
+                />
+              </Link>
             </div>
             <div className="cart-details">
               <div className="cart-title">
@@ -108,4 +111,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartItems);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(CartItems)
+);

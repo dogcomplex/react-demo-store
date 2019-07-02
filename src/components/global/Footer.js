@@ -3,7 +3,7 @@ import MailingList from './MailingList';
 
 const Footer = () => (
   <Fragment>
-    <MailingList />
+    {false && <MailingList />}
 
     <footer className="push">
       <div className="content">
