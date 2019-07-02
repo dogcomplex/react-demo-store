@@ -169,10 +169,6 @@ export const SingleProduct = ({
   );
 };
 
-const mapStateToProps = state => {
-  return state;
-};
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -182,4 +178,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);
+export default connect(state => state, mapDispatchToProps)(SingleProduct);

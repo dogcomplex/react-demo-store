@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SingleProduct it matches the snapshot 1`] = `
+<main
+  className="main-container push"
+  id="container"
+  role="main"
+>
+  <section
+    className="product"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="product-listing"
+      >
+        <div
+          className="product-image"
+        >
+          <img
+            alt="Low Stock Product-Example of a product that's low in stock"
+            src="https://s3-eu-west-1.amazonaws.com/bkt-svc-files-cmty-api-moltin-com/dc91aaed-b28c-4f17-9e9a-5e97aeb6223b/ec4359ba-471a-4229-803f-a6d2d5364abf.jpg"
+            style={
+              Object {
+                "background": undefined,
+              }
+            }
+          />
+        </div>
+        <div
+          className="product-description"
+        >
+          <h2>
+            Low Stock Product
+          </h2>
+          <p
+            className="manufacturer"
+          >
+            <span
+              className="hide-content"
+            >
+              Manufactured 
+            </span>
+            By
+             
+            <span
+              className="word-mark"
+            >
+              I
+              <span
+                className="love"
+              >
+                Love
+              </span>
+              Lamp
+            </span>
+          </p>
+          <p
+            className="price"
+          >
+            <span
+              className="hide-content"
+            >
+              Unit price 
+            </span>
+            $13
+          </p>
+          <div
+            className="description"
+          >
+            <p
+              className="hide-content"
+            >
+              Product details:
+            </p>
+            <p>
+              Example of a product that's low in stock
+            </p>
+          </div>
+          <form
+            className="product"
+            noValidate={true}
+          >
+            <div
+              className="quantity-input"
+            >
+              <p
+                className="hide-content"
+              >
+                Product quantity.
+              </p>
+              <p
+                className="hide-content"
+              >
+                Change the quantity by using the buttons, or alter the input directly.
+              </p>
+              <button
+                className="decrement number-button"
+                disabled={true}
+                onClick={[Function]}
+                type="button"
+              >
+                <span
+                  className="hide-content"
+                >
+                  Decrement quantity
+                </span>
+                <span
+                  aria-hidden="true"
+                >
+                  -
+                </span>
+              </button>
+              <input
+                className="quantity"
+                defaultValue={1}
+                max={3}
+                min="1"
+                name="number"
+                onClick={[Function]}
+                onKeyPress={[Function]}
+                size="2"
+                type="number"
+              />
+              <button
+                className="increment number-button"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <span
+                  className="hide-content"
+                >
+                  Increment quantity
+                </span>
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </button>
+            </div>
+            <button
+              className="submit"
+              onClick={[Function]}
+              type="submit"
+            >
+              Add to cart
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+`;
